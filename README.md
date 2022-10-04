@@ -1,6 +1,7 @@
 # Function rate limiter
 
 함수의 시간당 실행 횟수를 조절.
+~ 1.8kB, gzip ~ 0.5kB
 
 ## 사용
 
@@ -10,7 +11,10 @@ import Limiter from "function-rate-limiter";
 const limiter = new Limiter({
   invoke: 10,
   interval: 1000,
-  //   options: { async: true }, // 비동기 함수 기다림.
+  // options: {
+  //   async: true, // 비동기 함수 기다림.
+  //   delay: 100, // 함수 딜레이
+  // },
 });
 
 while (1) {
