@@ -13,7 +13,10 @@ const getNow = () => new Date().getTime();
   const configs = {
     invoke: 10,
     interval: 1000,
-    options: { async: process.env.async === "true" },
+    options: {
+      async: process.env.async === "true",
+      // delay: 100,
+    },
   };
   const limiter = new Limiter(configs);
   let count = 0;
@@ -23,7 +26,7 @@ const getNow = () => new Date().getTime();
     await limiter.exec(async () => {
       count++;
       console.log(count);
-      await wait(250);
+      await wait(50);
     });
 
     if (count % configs.invoke === 0) {

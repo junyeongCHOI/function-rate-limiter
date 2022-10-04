@@ -36,6 +36,7 @@ while (1) {
 - `interval` - Number - 실행 주기(ms)
 - `options` - Object
   - async - Boolean(Optional) - 실행 함수 기다림
+  - delay - Number - 실행 함수 사이의 딜레이
 
 ### `limiter.exec(cb)`
 

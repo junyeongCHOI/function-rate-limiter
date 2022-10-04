@@ -1,5 +1,6 @@
 type Options = {
   async: boolean;
+  delay: number;
 };
 
 type Configs = {
@@ -13,6 +14,7 @@ export default class Limiter {
   readonly invoke: number;
   readonly options: Options = {
     async: false,
+    delay: 0,
   };
   invoked: number;
   draft: number;
@@ -47,26 +49,34 @@ export default class Limiter {
       this.reset();
     }
 
+    this.invoked++;
+
     if (this.options.async) {
       await cb();
     } else {
       cb();
     }
 
-    this.invoked++;
+    if (this.options.delay) {
+      await this.wait(this.options.delay);
+    }
   }
 
-  private async waitDraft(): Promise<true> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, this.draft + this.interval + 1 - this.now());
-    });
+  private waitDraft(): Promise<true> {
+    return this.wait(this.draft + this.interval + 1 - this.now());
   }
 
   private reset(): void {
     this.invoked = 0;
     this.draft = this.now();
+  }
+
+  private async wait(t: number): Promise<true> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, t);
+    });
   }
 
   private now(): number {
