@@ -20,13 +20,6 @@ export default class Limiter {
   draft: number;
 
   constructor(configs: Configs) {
-    if (typeof configs.interval !== "number")
-      throw new Error("interval must be number.");
-    if (typeof configs.invoke !== "number")
-      throw new Error("invoke must be number.");
-    if (configs.options && typeof configs.options !== "object")
-      throw new Error("configs must be object.");
-
     this.interval = configs.interval;
     this.invoke = configs.invoke;
 
@@ -39,8 +32,6 @@ export default class Limiter {
   }
 
   async exec(cb: () => any): Promise<void> {
-    if (typeof cb !== "function") return;
-
     if (this.invoked >= this.invoke) {
       await this.waitDraft();
     }
